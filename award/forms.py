@@ -27,3 +27,9 @@ class RatingsForm(forms.ModelForm):
     class Meta:
         model = Ratings
         fields = ['design', 'usability', 'content']
+
+class PostForm(forms.ModelForm):
+
+    class Meta:
+        model = Posts
+        fields = ('photo', 'title', 'url', 'description', 'technologies_used',)
