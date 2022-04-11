@@ -30,3 +30,17 @@ class PostsTest(TestCase):
         self.post.delete_post()
         post = Posts.search_project('Django')
         self.assertTrue(len(post) < 1)
+
+class ProfileTest(TestCase):
+    def setUp(self):
+        self.user = User(username='venus', email='venus@gmail.com', password='newpassword')
+        self.user.save()
+
+    def test_instance(self):
+        self.assertTrue(isinstance(self.user, User))
+
+    def test_save_user(self):
+        self.user.save()
+
+    def test_delete_user(self):
+        self.user.delete()
