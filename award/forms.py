@@ -16,6 +16,15 @@ class UserSignupForm(UserCreationForm):
 
 User._meta.get_field('email')._unique = True 
 
+class UpdateUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['name', 'profile_picture', 'bio', 'phone_number']
+        
+        widgets = {
+            'bio': Textarea(attrs={'cols': 20, 'rows': 5}),
+        }
+
 class UpdateUserForm(forms.ModelForm):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
 
