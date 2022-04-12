@@ -22,4 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('award.urls')),
     path('tinymce /', include('tinymce.urls')),
+    path('accounts/register/',award_views.register, name='register'),
+    path('accounts/login/',auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
+    path('logout/',auth_views.LogoutView.as_view(), name='logout'),
 ]

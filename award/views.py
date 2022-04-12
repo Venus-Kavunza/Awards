@@ -8,6 +8,12 @@ from django.contrib.auth.models import User
 import random
 from .models import Posts, UserProfile,Ratings
 from .forms import  UpdateUserForm, UpdateUserProfileForm,UserSignupForm,PostsForm,RatingsForm
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializers import PostSerializer,ProfileSerializer,RatingSerializer
+from rest_framework import status
+from .permissions import IsAdminOrReadOnly
+from rest_framework import viewsets
 
 # Create your views here.
 
@@ -31,7 +37,7 @@ def index(request):
         print(random_post.photo)
     except Posts.DoesNotExist:
         posts = None
-    return render(request, 'all-awards/home.html',{'form':form,'current_user':current_user,'random_post': random_post,'posts':posts})
+    return render(request, 'all-awards/home.html',{'form':form,'current_user':current_user})
 
 
 def user_profile(request, username):
@@ -105,4 +111,45 @@ def project(request, post):
             return HttpResponseRedirect(request.path_info)
     else:
         form = RatingsForm()
-    return render(request, 'all-awards/project.html', {'post': post,'rating_form': form,'rating_status': rating_status,'current_user':current_user,'post_form':post_form})
+    return render(request, 'all-awards/projects.html', {'post': post,'rating_form': form,'rating_status': rating_status,'current_user':current_user,'post_form':post_form})
+
+@login_required(login_url='login')
+def search_project(request):
+    if request.method == 'GET':
+        title = request.GET.get("title")
+        posts = Posts.objects.filter(title__icontains=title).all()
+
+    return render(request, 'all-awards/search.html', {'posts': posts})
+
+
+def register(request):
+    if request.user.is_authenticated:
+    #redirect user to the profile page
+        return redirect('home')
+    if request.method=="POST":
+        form = UserSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            return redirect('login')
+            
+    else:
+        form = UserSignupForm()
+    return render(request,"registration/signup.html",{'form':form})
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAdminOrReadOnly,)
+    queryset = UserProfile.objects.all()
+    serializer_class = ProfileSerializer
+
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAdminOrReadOnly,)
+    queryset = Posts.objects.all()
+    serializer_class = PostSerializer
+    
+class RatingViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAdminOrReadOnly,)
+    queryset = Ratings.objects.all()
+    serializer_class = RatingSerializer

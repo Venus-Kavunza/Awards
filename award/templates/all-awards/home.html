@@ -5,101 +5,61 @@
 {% block content %} 
 {{ block.super}}
 
-<div class="container mt-0">
-    <div class="col-md-7">
-        <div class="row">
-            <div class="modal fade" id="post-upload" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Upload a Project</h5>
-                            <hr>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="post" enctype="multipart/form-data">
-                                <div class="change">
-                                    {% csrf_token %}
-                                    {{ form|crispy }}
-                                </div>
-                                
-                                <button class="btn btn-sm btn-color">Upload</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" data-dismiss="modal">
-                                    Close
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div>
+
+    <div class="container-fluid"
+      style="background-image: url('https://images.unsplash.com/photo-1471293413508-2cb95f2d2e9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60');  background-repeat: no-repeat; background-size: cover; height: 100vh;  background-position: center; text-align:center; overflow-x:hidden;">
+      
+  
+      <h1 style="  font-size:50px; margin-top:60px; color:aquamarine; font-family: 'Lobster Two', cursive;">Instagram
+      </h1>
+      <p style="color: beige;"><b> By: </b>Venus Mwende</p>
+      <div>
+        <img src="https://ucarecdn.com/257afbc7-9e6d-4984-9939-f83076ad6d84/progressremovebgpreview.png" alt="">
+      </div>
+      <a href="https://instagramcloneig.herokuapp.com/" class="btn btn-info btn-rounded" target="_blank">view site</a>
     </div>
-</div>
-<div class="container-fluid m-0 p-0 img-holder" style="background-image:url( {{random_post.photo.url}})" >
-    <div class="overlay">
-        <div class="pt-3">
-            <span class="m-3 font-weight-bold" style="font-size:20px ;">Site of the Day: </span>{% now "jS F Y " %}
-        </div>
-        
-        <div class="container pt-5">
-            <div class="text-center">
-                <h1> <a href="{% url 'project' random_post.title %}" class="text-white">{{random_post.title|title}}</a></h1>
-                <h5 class="pt-2">By  <span><a href="{% url 'user_profile' random_post.user.username  %}" class="link-color">{{random_post.user.username|title}}</a></span></h5>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6 mt-4" >
-                    
-                    {% for rating in random_post.ratings.all %}
-                    {% if forloop.counter is random_post.ratings.all.count %}
-                    <div class="rate-home">
-                        <div id="design1" class="rounded-circle">{{ rating.design_average}}<br>
-                        <span class="descr-rate">design</span>
-                        </div>                  
-                        <div id="usability1" class="ml-3 mr-3">{{ rating.usability_average }}<br>
-                            <span class="descr-rate">usability</span>
-                        </div>
-                        <div id="content1" class="">{{ rating.content_average }}<br>
-                            <span class="descr-rate">content</span>
-                        </div> 
-                        <div id="average1" class=" ml-3">{{rating.score}}<br>
-                            <span class="descr-rate">Score</span>
-                        </div> 
-                    </div>
-                </div>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="col-md-3"></div>
-          </div>
-          <a href="{{random_post.url}}" class="btn btn-success radius m-5">Visit Site</a>
-    </div>
-        
-    </div>
-   
-</div>
-<div class="container">
+
+    <br><br>
+  <div class="container-fluid">
     <div class="row">
-    {% for post in posts %}
-    <div class="col-md-4 mt-4">
-        <div class="card">
-            <a href="{% url 'project' post.title %}"><img class="card-img-top" src="{{ post.photo.url }}" alt="Card image cap" height="250"></a>
-            
-            <div class="card-body pt-5">
-              <h6 class="card-title text-sm"><a href="{% url 'project' post.title %}" class="link-color font-weight-bold">{{post.title|title}}</a>
-                 <a class="btn btn-sm btn-outline ml-4" href="{% url 'project' post.title %}"> VOTE</a>
-            </h6>
+      {% for project in json_projects %}
+      <div class="col-md-4">
+        <div class="card-group">
+          <div class="card card-personal mb-4">
+            <div class="view">
+              <img class="card-img-top" src="{{project.image.url}}" alt="Card image cap">
+              <a href="#!">
+                <div class="mask rgba-white-slight"></div>
+              </a>
             </div>
-            <div class="card-footer">
-                <a href="{% url 'user_profile' post.user.username  %}"> <img src="{{post.user.profile.profile_pic.url}}"  alt= "" class="rounded-circle user profile-img"> {{post.user.username|title}}</a> <span style="float:right">{{post.upload_date|date}}</span>
+
+            <div class="card-body">
+                <h3 style="font-family: 'Cuprum', sans-serif;">{{project.title}}</h3>
+  
+                <a href="{{project.link}}" target="_blank">view site</a>
+  
+                <p class="card-text"><b>project description:</b>{{project.description}}</p>
+              
+                <hr>
+                <span><a href="profile"> <img style="border-radius: 50%; width:30px; height:30px; "
+                      src="{{project.avatar }}" alt="image"></a>By
+                  <b>{{project.author}}</b></span>
+  
+                <p class="card-meta float-right">{{project.date_created}}</p>
+  
+              </div>
             </div>
           </div>
+  
+  
+        </div>
+        {% endfor %}
+
     </div>
-    {% endfor %}
-    </div>
+
 </div>
+
+</div>
+
 {%endblock%}
