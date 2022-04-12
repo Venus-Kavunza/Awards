@@ -7,7 +7,7 @@ Awards is an application that allows a user to post a project he/she has created
 ![Site Image]()
 
 ## Live link
-`https://awards032.herokuapp.com/`
+[Heroku](https://awards032.herokuapp.com/)
 ## Installation
 ### Requirements
 * python3.8
