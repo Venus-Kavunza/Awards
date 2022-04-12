@@ -9,7 +9,7 @@ class PostSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['id','name', 'profile_pic', 'bio', 'phone_number']
+        fields = ['id','name', 'profile_picture', 'bio', 'phone_number']
 
 
 class RatingSerializer(serializers.ModelSerializer):

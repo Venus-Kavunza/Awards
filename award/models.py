@@ -3,13 +3,14 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from phone_field import PhoneField
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Posts(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(max_length=300)
     url = models.URLField(max_length=400)
-    photo = models.ImageField(upload_to='images/')
+    photo = CloudinaryField('images/', blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     upload_date = models.DateTimeField(auto_now_add=True, blank=True)
     technologies_used = models.CharField(max_length=200, blank=True)
@@ -36,7 +37,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='profile')
     bio = models.TextField(max_length=400, blank=True)
     name = models.CharField(blank=True, max_length=120)
-    profile_picture = models.ImageField(upload_to='images/',default='v1639327874/images/default_drurzc.jpg')
+    profile_picture = CloudinaryField('images/',default='https://www.pinclipart.com/picdir/middle/181-1814767_person-svg-png-icon-free-download-profile-icon.png')
     phone_number = PhoneField(max_length=15, blank=True)
     
     def __str__(self):

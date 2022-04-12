@@ -10,7 +10,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="form-inline" action=" {% url 'search' %}" enctype="multipart/form-data" role="search" aria-label="Search">
+            <form class="form-inline"    aria-label="Search">
                 {% csrf_token %}
                  <input autocomplete="off" id="searching" class="form-control input-sm search" 
                     placeholder="&#xF002; search project"  style="font-family:Arial, FontAwesome" name="title">
@@ -18,17 +18,21 @@
             <ul class="nav navbar-nav navbar-right ml-auto mr-5">
   
                 {% if user.is_authenticated %}
-                <li class="nav-item active">
-                    <a data-toggle="modal" data-target="#post-upload" class=" btn btn-sm btn-color site mr-2">UPLOAD YOUR WEBSITE</a>
-                </li>
+                
                 <li class="nav-item active">
                     <a href="/api" class=" btn btn-sm btn-color site mr-2"> API</a>
                 </li>
+                <li class="nav-item active">
+                    <a href="/api/projects" class=" btn btn-sm btn-color site mr-2"> API-Projects</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/api/userprofiles" class=" btn btn-sm btn-color site mr-2"> API-Userprofile</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{user.profile.profile_picture.url}}"  alt= "" class="rounded-circle user profile-img"></a>
+                    <img src="https://www.pinclipart.com/picdir/middle/181-1814767_person-svg-png-icon-free-download-profile-icon.png" height="30px"  alt= "Profile" class="rounded-circle user profile-img"></a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a href="{%url 'profile' user.username%}" class="nav-link text-dark dropdown-item"><i class="fas fa-user"></i> Profile</a>
+                        <a href="{%url 'user_profile' %}" class="nav-link text-dark dropdown-item"><i class="fas fa-user"></i> Profile</a>
                         <a href="/logout" class="nav-link text-dark dropdown-item">Logout <i class="fas fa-sign-out-alt"></i></a>
               
                     </div>

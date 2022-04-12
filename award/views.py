@@ -19,6 +19,7 @@ from rest_framework import viewsets
 
 def index(request):
     current_user = request.user
+    project= Posts.objects.all()
     if request.method == "POST":
         form = PostsForm(request.POST,request.FILES)
         if form.is_valid():
@@ -37,29 +38,16 @@ def index(request):
         print(random_post.photo)
     except Posts.DoesNotExist:
         posts = None
-    return render(request, 'all-awards/home.html',{'form':form,'current_user':current_user})
+    return render(request, 'all-awards/home.html',{'form':form,'current_user':current_user, 'projects':project})
 
 
-def user_profile(request, username):
+def user_profile(request):
     current_user=request.user
     
-    if request.method == "POST":
-        post_form = PostsForm(request.POST,request.FILES)
-        if post_form.is_valid():
-            post = post_form.save(commit=False)
-            post.user = request.user
-            post.save()
-            return HttpResponseRedirect(reverse("home"))
-    else:
-        post_form = PostsForm()
-        
-    user_poster = get_object_or_404(User, username=username)
-    if request.user == user_poster:
-        return redirect('profile', username=request.user.username)
-    user_posts = user_poster.posts.all()
+   
     
     
-    return render(request, 'all-awards/post.html', {'user_poster': user_poster,'user_posts':user_posts,'post_form':post_form,'current_user':current_user})
+    return render(request, 'all-awards/post.html', {'current_user':current_user})
 
 @login_required(login_url='login')
 def project(request, post):
@@ -112,6 +100,36 @@ def project(request, post):
     else:
         form = RatingsForm()
     return render(request, 'all-awards/projects.html', {'post': post,'rating_form': form,'rating_status': rating_status,'current_user':current_user,'post_form':post_form})
+
+
+@login_required(login_url='login')
+def profile(request, username): 
+    posts = request.user.posts.all()
+    current_user=request.user
+    
+    if request.method == "POST": 
+        post_form = PostsForm(request.POST,request.FILES)
+        if post_form.is_valid():
+            post = post_form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return HttpResponseRedirect(reverse("home"))
+    else:
+        post_form = PostsForm()
+        
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return HttpResponseRedirect(request.path_info)
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateUserProfileForm(instance=request.user.profile)
+
+    return render(request, 'all-awards/userprofile.html', {'user_form':user_form,'profile_form':profile_form,'posts':posts,'post_form':post_form})
+
 
 @login_required(login_url='login')
 def search_project(request):

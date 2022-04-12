@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+import django_heroku
+import dj_database_url
+from decouple import Config,Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +39,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary',
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
@@ -85,7 +92,7 @@ WSGI_APPLICATION = 'heyapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'awards',
         'USER': 'moringa',
         'PASSWORD':'Venusstudy03.'
@@ -146,5 +153,24 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+cloudinary.config( 
+  cloud_name = "venusfabio", 
+  api_key = "928118823669567", 
+  api_secret = "9tvW95lcj70W6r-eUeXPXP9R2ZI" 
+)
+
+ACCOUNT_ACTIVATION_DAYS = 7
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+
+django_heroku.settings(locals())
+
+
+
+
+
+
 
 
