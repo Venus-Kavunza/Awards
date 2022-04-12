@@ -4,7 +4,7 @@
 Awards is an application that allows a user to post a project he/she has created and get it reviewed by his/her peers.
 
 ## Site image
-![Site Image]()
+![Site Image](https://github.com/Venus-Kavunza/Awards/blob/master/award/static/photos/landingpage.png)
 
 ## Live link
 [Heroku](https://awards032.herokuapp.com/)
